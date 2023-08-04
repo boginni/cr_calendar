@@ -132,36 +132,33 @@ class MonthItemState extends State<MonthItem> {
               final itemWidth = size.width;
               final itemHeight = size.height;
 
-              return Container(
-                height: itemHeight * _weekCount,
-                child: ValueListenableBuilder(
-                  builder: (context, value, _) {
-                    return widget.controller.isShowingEvents.value
-                        ? _getMonthCalendarWidget(itemWidth, itemHeight)
-                        : Stack(
-                      children: <Widget>[
-                        _getMonthCalendarWidget(
-                          itemWidth,
-                          itemHeight,
+              return ValueListenableBuilder(
+                builder: (context, value, _) {
+                  return widget.controller.isShowingEvents.value
+                      ? _getMonthCalendarWidget(itemWidth, itemHeight)
+                      : Stack(
+                    children: <Widget>[
+                      _getMonthCalendarWidget(
+                        itemWidth,
+                        itemHeight,
+                      ),
+                      IgnorePointer(
+                        child: EventsOverlay(
+                          eventBuilder: widget.eventBuilder,
+                          maxLines: widget.maxEventLines,
+                          topPadding: widget.eventTopPadding ??
+                              (itemHeight /
+                                  Contract.kDayItemTopPaddingCoef),
+                          itemWidth: itemWidth,
+                          itemHeight: itemHeight,
+                          begin: _beginRange,
+                          weekList: _weeksEvents,
                         ),
-                        IgnorePointer(
-                          child: EventsOverlay(
-                            eventBuilder: widget.eventBuilder,
-                            maxLines: widget.maxEventLines,
-                            topPadding: widget.eventTopPadding ??
-                                (itemHeight /
-                                    Contract.kDayItemTopPaddingCoef),
-                            itemWidth: itemWidth,
-                            itemHeight: itemHeight,
-                            begin: _beginRange,
-                            weekList: _weeksEvents,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                  valueListenable: widget.controller.isShowingEvents,
-                ),
+                      ),
+                    ],
+                  );
+                },
+                valueListenable: widget.controller.isShowingEvents,
               ) ;
             },
           ),
