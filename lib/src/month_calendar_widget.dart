@@ -145,7 +145,7 @@ class MonthCalendarWidgetState extends State<MonthCalendarWidget> {
     final weeks = List.generate(
       widget.weekCount,
       (index) => Container(
-        height: widget.itemHeight,
+        // height: widget.itemHeight,
         child: Row(
           children: _buildDays(widget.weeksToShow[index], index),
         ),
