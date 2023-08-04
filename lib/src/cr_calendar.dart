@@ -363,58 +363,54 @@ class _CrCalendarState extends State<CrCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-      builder: (BuildContext context, Orientation orientation) {
-        return PageView.builder(
-          itemCount: _minPage + widget.controller._maxPage,
-          controller: widget.controller._getUpdatedPageController(),
-          itemBuilder: (context, index) {
-            final offset = index - widget.controller._initialPage;
-            final month = Jiffy.parseFromDateTime(_initialDate)
-                .add(months: offset)
-                .dateTime;
-            return Container(
-              color: widget.backgroundColor,
-              child: MonthItem(
-                eventTopPadding: widget.eventsTopPadding,
-                displayMonth: month,
-                controller: widget.controller,
-                eventBuilder: widget.eventBuilder,
-                maxEventLines: widget.maxEventLines,
-                forceSixWeek: widget.forceSixWeek,
-                currentDay: _returnCurrentDayForDateOrNull(month),
-                touchMode: widget.touchMode,
-                onDayTap: (day) {
-                  _scrollOnUnboundMonth(day);
-                },
-                onRangeSelected: (events) {
-                  final begin = widget.controller.selectedRange.begin;
-                  final end = widget.controller.selectedRange.end;
+    return PageView.builder(
+      itemCount: _minPage + widget.controller._maxPage,
+      controller: widget.controller._getUpdatedPageController(),
+      itemBuilder: (context, index) {
+        final offset = index - widget.controller._initialPage;
+        final month = Jiffy.parseFromDateTime(_initialDate)
+            .add(months: offset)
+            .dateTime;
+        return Container(
+          color: widget.backgroundColor,
+          child: MonthItem(
+            eventTopPadding: widget.eventsTopPadding,
+            displayMonth: month,
+            controller: widget.controller,
+            eventBuilder: widget.eventBuilder,
+            maxEventLines: widget.maxEventLines,
+            forceSixWeek: widget.forceSixWeek,
+            currentDay: _returnCurrentDayForDateOrNull(month),
+            touchMode: widget.touchMode,
+            onDayTap: (day) {
+              _scrollOnUnboundMonth(day);
+            },
+            onRangeSelected: (events) {
+              final begin = widget.controller.selectedRange.begin;
+              final end = widget.controller.selectedRange.end;
 
-                  if (widget.onRangeSelected != null &&
-                      widget.touchMode == TouchMode.rangeSelection) {
-                    widget.onRangeSelected?.call(events, begin, end);
-                  }
-                  widget.controller.selectedEvents = events;
-                },
-                onDaySelected: (events, day) {
-                  if (widget.onDayClicked != null &&
-                      widget.touchMode == TouchMode.singleTap) {
-                    widget.onDayClicked?.call(events, day.dateTime);
-                  }
-                  widget.controller.selectedEvents = events;
-                },
-                weekDaysBuilder: widget.weekDaysBuilder,
-                dayItemBuilder: widget.dayItemBuilder,
-                weeksToShow: widget.weeksToShow,
-                firstWeekDay: _firstWeekDay,
-                localizedWeekDaysBuilder: widget.localizedWeekDaysBuilder,
-              ),
-            );
-          },
-          onPageChanged: _pageChanged,
+              if (widget.onRangeSelected != null &&
+                  widget.touchMode == TouchMode.rangeSelection) {
+                widget.onRangeSelected?.call(events, begin, end);
+              }
+              widget.controller.selectedEvents = events;
+            },
+            onDaySelected: (events, day) {
+              if (widget.onDayClicked != null &&
+                  widget.touchMode == TouchMode.singleTap) {
+                widget.onDayClicked?.call(events, day.dateTime);
+              }
+              widget.controller.selectedEvents = events;
+            },
+            weekDaysBuilder: widget.weekDaysBuilder,
+            dayItemBuilder: widget.dayItemBuilder,
+            weeksToShow: widget.weeksToShow,
+            firstWeekDay: _firstWeekDay,
+            localizedWeekDaysBuilder: widget.localizedWeekDaysBuilder,
+          ),
         );
       },
+      onPageChanged: _pageChanged,
     );
   }
 
