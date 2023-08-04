@@ -121,6 +121,8 @@ class MonthItemState extends State<MonthItem> {
           builder: (context, constraint) {
             final size = _getConstrainedSize(constraint);
             return Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: _getDaysOfWeek(size.width),
             );
           },
