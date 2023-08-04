@@ -125,51 +125,44 @@ class MonthItemState extends State<MonthItem> {
             );
           },
         ),
-        Expanded(
-          child: LayoutBuilder(
-            builder: (context, constraint) {
-              final size = _getConstrainedSize(constraint);
-              final itemWidth = size.width;
-              final itemHeight = size.height;
+        LayoutBuilder(
+          builder: (context, constraint) {
+            final size = _getConstrainedSize(constraint);
+            final itemWidth = size.width;
+            final itemHeight = size.height;
 
-              return SingleChildScrollView(
-                physics: itemWidth == itemHeight
-                    ? const ClampingScrollPhysics()
-                    : const NeverScrollableScrollPhysics(),
-                child: Container(
-                  height: itemHeight * _weekCount,
-                  child: ValueListenableBuilder(
-                    builder: (context, value, _) {
-                      return widget.controller.isShowingEvents.value
-                          ? _getMonthCalendarWidget(itemWidth, itemHeight)
-                          : Stack(
-                              children: <Widget>[
-                                _getMonthCalendarWidget(
-                                  itemWidth,
-                                  itemHeight,
-                                ),
-                                IgnorePointer(
-                                  child: EventsOverlay(
-                                    eventBuilder: widget.eventBuilder,
-                                    maxLines: widget.maxEventLines,
-                                    topPadding: widget.eventTopPadding ??
-                                        (itemHeight /
-                                            Contract.kDayItemTopPaddingCoef),
-                                    itemWidth: itemWidth,
-                                    itemHeight: itemHeight,
-                                    begin: _beginRange,
-                                    weekList: _weeksEvents,
-                                  ),
-                                ),
-                              ],
-                            );
-                    },
-                    valueListenable: widget.controller.isShowingEvents,
-                  ),
-                ),
-              );
-            },
-          ),
+            return Container(
+              height: itemHeight * _weekCount,
+              child: ValueListenableBuilder(
+                builder: (context, value, _) {
+                  return widget.controller.isShowingEvents.value
+                      ? _getMonthCalendarWidget(itemWidth, itemHeight)
+                      : Stack(
+                    children: <Widget>[
+                      _getMonthCalendarWidget(
+                        itemWidth,
+                        itemHeight,
+                      ),
+                      IgnorePointer(
+                        child: EventsOverlay(
+                          eventBuilder: widget.eventBuilder,
+                          maxLines: widget.maxEventLines,
+                          topPadding: widget.eventTopPadding ??
+                              (itemHeight /
+                                  Contract.kDayItemTopPaddingCoef),
+                          itemWidth: itemWidth,
+                          itemHeight: itemHeight,
+                          begin: _beginRange,
+                          weekList: _weeksEvents,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+                valueListenable: widget.controller.isShowingEvents,
+              ),
+            ) ;
+          },
         )
       ],
     );

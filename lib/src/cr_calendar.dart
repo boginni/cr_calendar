@@ -109,6 +109,12 @@ final class CrCalendarController extends ChangeNotifier {
     _redrawCalendar();
   }
 
+  void setDateRange(DateRangeModel dateRangeModel) {
+    selectedDate = dateRangeModel.begin;
+    selectedRange = dateRangeModel;
+    _redrawCalendar();
+  }
+
   /// Swipe to the next month page.
   void swipeToNextMonth([Duration? animationDuration, Curve? curve]) {
     final targetPage = page + 1;
